@@ -1,0 +1,22 @@
+{
+    "name": "fsi/property-observer",
+    "type": "library",
+    "description": "FSi PropertyObserver component is a simple component which tracks changes in registered object's properties.",
+    "keywords": ["fsi", "component", "property observer"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Lukasz Cybula",
+            "email": "lukasz@fsi.pl"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/property-access": "~2.2"
+    },
+    "autoload": {
+        "psr-0": {
+            "FSi\\Component\\PropertyObserver": "lib/"
+        }
+    }
+}
