@@ -21,19 +21,6 @@ class PropertyObserver implements PropertyObserverInterface
     protected $savedValues;
 
     /**
-     * Returns the one and only signleton instance
-     *
-     * @return \FSi\Component\PropertyObserver\PropertyObserver
-     */
-    static public function getPropertyObserver()
-    {
-        if (!isset(self::$instance)) {
-            self::$instance = new PropertyObserver();
-        }
-        return self::$instance;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function saveValue($object, $propertyPath)
@@ -42,8 +29,9 @@ class PropertyObserver implements PropertyObserverInterface
             throw new \InvalidArgumentException('Only object\'s properties could be observed by PropertyObserver');
         }
         $oid = spl_object_hash($object);
-        if (!isset($this->savedValues[$oid]))
+        if (!isset($this->savedValues[$oid])) {
             $this->savedValues[$oid] = array();
+        }
         $this->savedValues[$oid][$propertyPath] = PropertyAccess::getPropertyAccessor()->getValue($object, $propertyPath);
     }
 
