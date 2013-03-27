@@ -18,7 +18,7 @@ class PropertyObserver implements PropertyObserverInterface
      *
      * @var array
      */
-    protected $savedValues;
+    protected $savedValues = array();
 
     /**
      * {@inheritdoc}
@@ -28,6 +28,7 @@ class PropertyObserver implements PropertyObserverInterface
         if (!is_object($object)) {
             throw new \InvalidArgumentException('Only object\'s properties could be observed by PropertyObserver');
         }
+
         $oid = spl_object_hash($object);
         if (!isset($this->savedValues[$oid])) {
             $this->savedValues[$oid] = array();
@@ -43,10 +44,12 @@ class PropertyObserver implements PropertyObserverInterface
         if (!is_object($object)) {
             throw new \InvalidArgumentException('Only object\'s properties could be observed by PropertyObserver');
         }
+
         $oid = spl_object_hash($object);
         if (!isset($this->savedValues[$oid]) || !array_key_exists($propertyPath, $this->savedValues[$oid])) {
             throw new \BadMethodCallException(sprintf('Value of property "%s" from specified object was not saved previously', $propertyPath));
         }
+
         return $this->savedValues[$oid][$propertyPath];
     }
 
@@ -70,6 +73,7 @@ class PropertyObserver implements PropertyObserverInterface
         if (!is_object($object)) {
             throw new \InvalidArgumentException('Only object\'s properties could be observed by PropertyObserver');
         }
+
         return ($this->getSavedValue($object, $propertyPath) !== PropertyAccess::getPropertyAccessor()->getValue($object, $propertyPath));
     }
 }
