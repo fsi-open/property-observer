@@ -12,6 +12,16 @@ namespace FSi\Component\PropertyObserver;
 interface PropertyObserverInterface
 {
     /**
+     * Set new value of specified property and save it in internal storage.
+     *
+     * @param object $object
+     * @param string $propertyPath
+     * @param mixed $value
+     * @throws \InvalidArgumentException
+     */
+    public function setValue($object, $propertyPath, $value);
+
+    /**
      * Saves current value of specified property in internal storage.
      *
      * @param object $object

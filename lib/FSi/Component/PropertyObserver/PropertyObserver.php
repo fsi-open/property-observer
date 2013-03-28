@@ -23,6 +23,19 @@ class PropertyObserver implements PropertyObserverInterface
     /**
      * {@inheritdoc}
      */
+    public function setValue($object, $propertyPath, $value)
+    {
+        if (!is_object($object)) {
+            throw new \InvalidArgumentException('Only object\'s properties could be observed by PropertyObserver');
+        }
+
+        PropertyAccess::getPropertyAccessor()->setValue($object, $propertyPath, $value);
+        $this->saveValue($object, $propertyPath);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function saveValue($object, $propertyPath)
     {
         if (!is_object($object)) {

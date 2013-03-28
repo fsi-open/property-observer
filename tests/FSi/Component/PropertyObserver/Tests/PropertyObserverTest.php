@@ -34,6 +34,24 @@ class PropertyObserverTest extends \PHPUnit_Framework_TestCase
         $observer->hasValueChanged($object, 'property4');
     }
 
+    public function testSetValue()
+    {
+        $observer = new PropertyObserver();
+
+        $object = new TestObject();
+        $observer->setValue($object, 'property1', 'original value 1');
+        $observer->setValue($object, 'property2', 'original value 2');
+        $observer->setValue($object, 'property3', 'original value 3');
+
+        $object->property1 = 'new value 1';
+        $object->property3 = 'new value 3';
+        $this->assertTrue($observer->hasValueChanged($object, 'property1'));
+        $this->assertFalse($observer->hasValueChanged($object, 'property2'));
+        $this->assertTrue($observer->hasValueChanged($object, 'property3'));
+        $this->setExpectedException('BadMethodCallException');
+        $observer->hasValueChanged($object, 'property4');
+    }
+
     public function testGetSavedValue()
     {
         $observer = new PropertyObserver();
