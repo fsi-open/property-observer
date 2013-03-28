@@ -26,7 +26,7 @@ class PropertyObserver implements PropertyObserverInterface
     public function setValue($object, $propertyPath, $value)
     {
         if (!is_object($object)) {
-            throw new \InvalidArgumentException('Only object\'s properties could be observed by PropertyObserver');
+            throw new Exception\InvalidArgumentException('Only object\'s properties could be observed by PropertyObserver');
         }
 
         PropertyAccess::getPropertyAccessor()->setValue($object, $propertyPath, $value);
@@ -39,7 +39,7 @@ class PropertyObserver implements PropertyObserverInterface
     public function saveValue($object, $propertyPath)
     {
         if (!is_object($object)) {
-            throw new \InvalidArgumentException('Only object\'s properties could be observed by PropertyObserver');
+            throw new Exception\InvalidArgumentException('Only object\'s properties could be observed by PropertyObserver');
         }
 
         $oid = spl_object_hash($object);
@@ -55,12 +55,12 @@ class PropertyObserver implements PropertyObserverInterface
     public function getSavedValue($object, $propertyPath)
     {
         if (!is_object($object)) {
-            throw new \InvalidArgumentException('Only object\'s properties could be observed by PropertyObserver');
+            throw new Exception\InvalidArgumentException('Only object\'s properties could be observed by PropertyObserver');
         }
 
         $oid = spl_object_hash($object);
         if (!isset($this->savedValues[$oid]) || !array_key_exists($propertyPath, $this->savedValues[$oid])) {
-            throw new \BadMethodCallException(sprintf('Value of property "%s" from specified object was not saved previously', $propertyPath));
+            throw new Exception\BadMethodCallException(sprintf('Value of property "%s" from specified object was not saved previously', $propertyPath));
         }
 
         return $this->savedValues[$oid][$propertyPath];
@@ -84,7 +84,7 @@ class PropertyObserver implements PropertyObserverInterface
     public function hasValueChanged($object, $propertyPath)
     {
         if (!is_object($object)) {
-            throw new \InvalidArgumentException('Only object\'s properties could be observed by PropertyObserver');
+            throw new Exception\InvalidArgumentException('Only object\'s properties could be observed by PropertyObserver');
         }
 
         return ($this->getSavedValue($object, $propertyPath) !== PropertyAccess::getPropertyAccessor()->getValue($object, $propertyPath));
