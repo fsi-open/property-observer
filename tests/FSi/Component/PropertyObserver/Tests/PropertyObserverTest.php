@@ -15,7 +15,7 @@ class PropertyObserverTest extends \PHPUnit_Framework_TestCase
 {
     public function testValueChanged()
     {
-        $observer = PropertyObserver::getPropertyObserver();
+        $observer = new PropertyObserver();
 
         $object = new TestObject();
         $object->property1 = 'original value 1';
@@ -36,7 +36,7 @@ class PropertyObserverTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSavedValue()
     {
-        $observer = PropertyObserver::getPropertyObserver();
+        $observer = new PropertyObserver();
 
         $object = new TestObject();
         $object->property1 = 'original value 1';
