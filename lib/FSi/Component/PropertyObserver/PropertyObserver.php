@@ -52,6 +52,19 @@ class PropertyObserver implements PropertyObserverInterface
     /**
      * {@inheritdoc}
      */
+    public function hasSavedValue($object, $propertyPath)
+    {
+        if (!is_object($object)) {
+            throw new Exception\InvalidArgumentException('Only object\'s properties could be observed by PropertyObserver');
+        }
+
+        $oid = spl_object_hash($object);
+        return isset($this->savedValues[$oid]) && array_key_exists($propertyPath, $this->savedValues[$oid]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getSavedValue($object, $propertyPath)
     {
         if (!is_object($object)) {

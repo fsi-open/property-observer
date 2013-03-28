@@ -31,6 +31,16 @@ interface PropertyObserverInterface
     public function saveValue($object, $propertyPath);
 
     /**
+     * Returns true if value of specified property has not been ever saved.
+     *
+     * @param object $object
+     * @param string $propertyPath
+     * @throws \InvalidArgumentException
+     * @return mixed
+     */
+    public function hasSavedValue($object, $propertyPath);
+
+    /**
      * Returns previously saved value of specified property or throws exception if it has not been saved.
      *
      * @param object $object
