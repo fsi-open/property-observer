@@ -44,5 +44,5 @@ if ($observer->hasValueChanged($object, 'name')) {
 }
 ```
 
-The whole magic behind mapping propery names to getters/setters (if necessary) is done by symfony/property-access under the hood.
+The whole magic behind mapping property names to getters/setters (if necessary) is done by symfony/property-access under the hood.
  
