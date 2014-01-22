@@ -1,7 +1,7 @@
 <?php
 
 /**
- * (c) Fabryka Stron Internetowych sp. z o.o <info@fsi.pl>
+ * (c) FSi sp. z o.o. <info@fsi.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -29,7 +29,7 @@ class PropertyObserver implements PropertyObserverInterface
             throw new Exception\InvalidArgumentException('Only object\'s properties could be observed by PropertyObserver');
         }
 
-        PropertyAccess::getPropertyAccessor()->setValue($object, $propertyPath, $value);
+        PropertyAccess::createPropertyAccessor()->setValue($object, $propertyPath, $value);
         $this->saveValue($object, $propertyPath);
     }
 
@@ -46,7 +46,7 @@ class PropertyObserver implements PropertyObserverInterface
         if (!isset($this->savedValues[$oid])) {
             $this->savedValues[$oid] = array();
         }
-        $this->savedValues[$oid][$propertyPath] = PropertyAccess::getPropertyAccessor()->getValue($object, $propertyPath);
+        $this->savedValues[$oid][$propertyPath] = PropertyAccess::createPropertyAccessor()->getValue($object, $propertyPath);
     }
 
     /**
@@ -84,7 +84,7 @@ class PropertyObserver implements PropertyObserverInterface
      */
     public function resetValue($object, $propertyPath)
     {
-        PropertyAccess::getPropertyAccessor()->setValue(
+        PropertyAccess::createPropertyAccessor()->setValue(
             $object,
             $propertyPath,
             $this->getSavedValue($object, $propertyPath)
@@ -100,6 +100,6 @@ class PropertyObserver implements PropertyObserverInterface
             throw new Exception\InvalidArgumentException('Only object\'s properties could be observed by PropertyObserver');
         }
 
-        return ($this->getSavedValue($object, $propertyPath) !== PropertyAccess::getPropertyAccessor()->getValue($object, $propertyPath));
+        return ($this->getSavedValue($object, $propertyPath) !== PropertyAccess::createPropertyAccessor()->getValue($object, $propertyPath));
     }
 }

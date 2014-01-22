@@ -1,7 +1,7 @@
 <?php
 
 /**
- * (c) Fabryka Stron Internetowych sp. z o.o <info@fsi.pl>
+ * (c) FSi sp. z o.o. <info@fsi.pl>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -9,6 +9,7 @@
 
 namespace FSi\Component\PropertyObserver\Tests;
 
+use FSi\Component\PropertyObserver\MultiplePropertyObserver;
 use FSi\Component\PropertyObserver\PropertyObserver;
 
 class PropertyObserverTest extends \PHPUnit_Framework_TestCase
@@ -81,6 +82,37 @@ class PropertyObserverTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($observer->getSavedValue($object, 'property3'));
         $this->setExpectedException('FSi\Component\PropertyObserver\Exception\BadMethodCallException');
         $observer->getSavedValue($object, 'property4');
+    }
+
+    public function testSaveMultipleValues()
+    {
+        $observer = new MultiplePropertyObserver();
+        $properties = array('property1', 'property2', 'property3');
+
+        $object = new TestObject();
+        $object->property1 = 'original value 1';
+        $object->property2 = 'original value 2';
+
+        $observer->saveValues($object, $properties);
+
+        $this->assertEquals(
+            $observer->getSavedValue($object, 'property1'),
+            'original value 1'
+        );
+        $this->assertEquals(
+            $observer->getSavedValue($object, 'property2'),
+            'original value 2'
+        );
+        $this->assertNull(
+            $observer->getSavedValue($object, 'property3')
+        );
+
+        $object->property1 = 'new value 1';
+        $object->property3 = 'new value 3';
+
+        $this->assertTrue(
+            $observer->hasChangedValues($object, $properties)
+        );
     }
 }
 
