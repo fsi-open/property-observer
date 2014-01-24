@@ -39,6 +39,31 @@ class PropertyObserverTest extends \PHPUnit_Framework_TestCase
         $observer->hasValueChanged($object, 'property4');
     }
 
+    public function testChangedValue()
+    {
+        $observer = new PropertyObserver();
+
+        $object = new TestObject();
+        $object->property1 = 'original value 1';
+        $object->property2 = 'original value 2';
+
+        $observer->saveValue($object, 'property1');
+        $observer->saveValue($object, 'property2');
+        $observer->saveValue($object, 'property3');
+
+        $object->property1 = 'new value 1';
+        $object->property3 = 'new value 3';
+        $this->assertTrue($observer->hasSavedValue($object, 'property1'));
+        $this->assertTrue($observer->hasChangedValue($object, 'property1'));
+        $this->assertTrue($observer->hasSavedValue($object, 'property2'));
+        $this->assertFalse($observer->hasChangedValue($object, 'property2'));
+        $this->assertTrue($observer->hasChangedValue($object, 'property3'));
+        $this->assertTrue($observer->hasSavedValue($object, 'property3'));
+        $this->assertFalse($observer->hasSavedValue($object, 'property4'));
+        $this->setExpectedException('FSi\Component\PropertyObserver\Exception\BadMethodCallException');
+        $observer->hasChangedValue($object, 'property4');
+    }
+
     public function testSetValue()
     {
         $observer = new PropertyObserver();
@@ -50,11 +75,11 @@ class PropertyObserverTest extends \PHPUnit_Framework_TestCase
 
         $object->property1 = 'new value 1';
         $object->property3 = 'new value 3';
-        $this->assertTrue($observer->hasValueChanged($object, 'property1'));
-        $this->assertFalse($observer->hasValueChanged($object, 'property2'));
-        $this->assertTrue($observer->hasValueChanged($object, 'property3'));
+        $this->assertTrue($observer->hasChangedValue($object, 'property1'));
+        $this->assertFalse($observer->hasChangedValue($object, 'property2'));
+        $this->assertTrue($observer->hasChangedValue($object, 'property3'));
         $this->setExpectedException('FSi\Component\PropertyObserver\Exception\BadMethodCallException');
-        $observer->hasValueChanged($object, 'property4');
+        $observer->hasChangedValue($object, 'property4');
     }
 
     public function testGetSavedValue()
@@ -113,6 +138,22 @@ class PropertyObserverTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(
             $observer->hasChangedValues($object, $properties)
         );
+    }
+
+    public function testTreatNotSavedAsNull()
+    {
+        $observer = new PropertyObserver();
+
+        $object = new TestObject();
+        $object->property1 = 'original value 1';
+        $object->property2 = 'original value 2';
+
+        $object->property1 = 'new value 1';
+        $object->property3 = 'new value 3';
+        $this->assertTrue($observer->hasChangedValue($object, 'property1', true));
+        $this->assertTrue($observer->hasChangedValue($object, 'property2', true));
+        $this->assertTrue($observer->hasChangedValue($object, 'property3', true));
+        $this->assertFalse($observer->hasChangedValue($object, 'property4', true));
     }
 }
 

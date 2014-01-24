@@ -21,6 +21,19 @@ class PropertyObserver implements PropertyObserverInterface
     protected $savedValues = array();
 
     /**
+     * @var \Symfony\Component\PropertyAccess\PropertyAccessor
+     */
+    protected $propertyAccessor;
+
+    /**
+     * Constructs new PropertyObserver
+     */
+    public function __construct()
+    {
+        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function setValue($object, $propertyPath, $value)
@@ -29,7 +42,7 @@ class PropertyObserver implements PropertyObserverInterface
             throw new Exception\InvalidArgumentException('Only object\'s properties could be observed by PropertyObserver');
         }
 
-        PropertyAccess::createPropertyAccessor()->setValue($object, $propertyPath, $value);
+        $this->propertyAccessor->setValue($object, $propertyPath, $value);
         $this->saveValue($object, $propertyPath);
     }
 
@@ -46,7 +59,7 @@ class PropertyObserver implements PropertyObserverInterface
         if (!isset($this->savedValues[$oid])) {
             $this->savedValues[$oid] = array();
         }
-        $this->savedValues[$oid][$propertyPath] = PropertyAccess::createPropertyAccessor()->getValue($object, $propertyPath);
+        $this->savedValues[$oid][$propertyPath] = $this->propertyAccessor->getValue($object, $propertyPath);
     }
 
     /**
@@ -84,7 +97,7 @@ class PropertyObserver implements PropertyObserverInterface
      */
     public function resetValue($object, $propertyPath)
     {
-        PropertyAccess::createPropertyAccessor()->setValue(
+        $this->propertyAccessor->setValue(
             $object,
             $propertyPath,
             $this->getSavedValue($object, $propertyPath)
@@ -94,12 +107,26 @@ class PropertyObserver implements PropertyObserverInterface
     /**
      * {@inheritdoc}
      */
-    public function hasValueChanged($object, $propertyPath)
+    public function hasChangedValue($object, $propertyPath, $notSavedAsNull = false)
     {
         if (!is_object($object)) {
             throw new Exception\InvalidArgumentException('Only object\'s properties could be observed by PropertyObserver');
         }
 
-        return ($this->getSavedValue($object, $propertyPath) !== PropertyAccess::createPropertyAccessor()->getValue($object, $propertyPath));
+        $currentValue = $this->propertyAccessor->getValue($object, $propertyPath);
+
+        if ($notSavedAsNull && !$this->hasSavedValue($object, $propertyPath)) {
+            return isset($currentValue);
+        }
+
+        return ($this->getSavedValue($object, $propertyPath) !== $currentValue);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasValueChanged($object, $propertyPath)
+    {
+        return $this->hasChangedValue($object, $propertyPath);
     }
 }

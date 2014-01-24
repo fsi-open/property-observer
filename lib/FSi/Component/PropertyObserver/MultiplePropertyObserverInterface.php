@@ -26,8 +26,10 @@ interface MultiplePropertyObserverInterface extends PropertyObserverInterface
      *
      * @param object $object
      * @param array $propertyPaths
+     * @param bool $notSavedAsNull if true then property that was not previously saved is
+     * treated as null, otherwise exception will be thrown if specified property path has not been saved
      * @throws \InvalidArgumentException
      * @return boolean
      */
-    public function hasChangedValues($object, array $propertyPath);
+    public function hasChangedValues($object, array $propertyPath, $notSavedAsNull = false);
 }
