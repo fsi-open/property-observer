@@ -64,8 +64,22 @@ interface PropertyObserverInterface
      *
      * @param object $object
      * @param string $propertyPath
+     * @param bool $notSavedAsNull if true then property that was not previously saved is
+     * treated as null, otherwise exception will be thrown if specified property path has not been saved
      * @throws \InvalidArgumentException
      * @return boolean
+     *
+     */
+    public function hasChangedValue($object, $propertyPath, $notSavedAsNull = false);
+
+    /**
+     * Returns true if previously saved value is different (in PHP strict sense) from the current one.
+     *
+     * @param object $object
+     * @param string $propertyPath
+     * @throws \InvalidArgumentException
+     * @return boolean
+     * @deprecated will be removed in 1.0
      */
     public function hasValueChanged($object, $propertyPath);
 }

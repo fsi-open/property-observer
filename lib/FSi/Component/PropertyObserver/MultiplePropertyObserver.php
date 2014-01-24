@@ -24,11 +24,11 @@ class MultiplePropertyObserver extends PropertyObserver implements MultiplePrope
     /**
      * {@inheritdoc}
      */
-    public function hasChangedValues($object, array $propertyPaths)
+    public function hasChangedValues($object, array $propertyPaths, $notSavedAsNull = false)
     {
         $valueChanged = false;
         foreach ($propertyPaths as $propertyPath) {
-            $valueChanged = $valueChanged || $this->hasValueChanged($object, $propertyPath);
+            $valueChanged = $valueChanged || $this->hasValueChanged($object, $propertyPath, $notSavedAsNull);
         }
         return $valueChanged;
     }

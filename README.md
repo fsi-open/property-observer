@@ -28,7 +28,7 @@ and point B in our code.
 use FSi\Component\PropertyObserver\PropertyObserver
 
 $object = new SomeObjectClass();
-$object->setName('some name')
+$object->setName('some name');
 
 // point A
 $observer = new PropertyObserver();
@@ -37,7 +37,7 @@ $observer->saveValue($object, 'name');
 // a lot of complex code
 
 // point B
-if ($observer->hasValueChanged($object, 'name')) {
+if ($observer->hasChangedValue($object, 'name')) {
     // do something
 } else {
     // do something else
@@ -45,4 +45,28 @@ if ($observer->hasValueChanged($object, 'name')) {
 ```
 
 The whole magic behind mapping property names to getters/setters (if necessary) is done by symfony/property-access under the hood.
- 
+
+Another way to observe object's property is to do it for several properties at one time:
+
+```php
+use FSi\Component\PropertyObserver\PropertyObserver
+
+$object = new SomeObjectClass();
+$object->setName('some name');
+$object->setDate(new \DateTie());
+$object->setText('text');
+
+// point A
+$observer = new PropertyObserver();
+$observedProperties = array('name', 'date', 'text');
+$observer->saveValues($object, $observedProperties);
+
+// a lot of complex code which can modify properties 'name', 'date' and/or 'text' of $object
+
+// point B
+if ($observer->hasChangedValues($object, $observedProperties)) {
+    // do something
+} else {
+    // do something else
+}
+```
