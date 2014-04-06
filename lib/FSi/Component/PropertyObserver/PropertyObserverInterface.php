@@ -84,9 +84,14 @@ interface PropertyObserverInterface
     public function hasValueChanged($object, $propertyPath);
 
     /**
-     * Clears internally saved values of all objects or only the one specified as an argument
+     * Clears internally saved values of specified object
      *
      * @param object $object
      */
-    public function clear($object = null);
+    public function remove($object);
+
+    /**
+     * Clears internally saved values of all objects
+     */
+    public function clear();
 }

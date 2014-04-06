@@ -156,7 +156,7 @@ class PropertyObserverTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($observer->hasChangedValue($object, 'property4', true));
     }
 
-    public function testClearOneObject()
+    public function testRemoveObject()
     {
         $observer = new PropertyObserver();
 
@@ -170,13 +170,13 @@ class PropertyObserverTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($observer->hasSavedValue($object1, 'property1'));
         $this->assertTrue($observer->hasSavedValue($object2, 'property2'));
 
-        $observer->clear($object1);
+        $observer->remove($object1);
 
         $this->assertFalse($observer->hasSavedValue($object1, 'property1'));
         $this->assertTrue($observer->hasSavedValue($object2, 'property2'));
     }
 
-    public function testClearAllObjects()
+    public function testClear()
     {
         $observer = new PropertyObserver();
 
