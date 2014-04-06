@@ -49,15 +49,15 @@ The whole magic behind mapping property names to getters/setters (if necessary) 
 Another way to observe object's property is to do it for several properties at one time:
 
 ```php
-use FSi\Component\PropertyObserver\PropertyObserver
+use FSi\Component\PropertyObserver\MultiplePropertyObserver
 
 $object = new SomeObjectClass();
 $object->setName('some name');
-$object->setDate(new \DateTie());
+$object->setDate(new \DateTime());
 $object->setText('text');
 
 // point A
-$observer = new PropertyObserver();
+$observer = new MultiplePropertyObserver();
 $observedProperties = array('name', 'date', 'text');
 $observer->saveValues($object, $observedProperties);
 
@@ -68,5 +68,29 @@ if ($observer->hasChangedValues($object, $observedProperties)) {
     // do something
 } else {
     // do something else
+}
+```
+
+If you want to use one ``PropertyObserver`` instance to handle very large number of objects, i.e in long running
+scripts or batches, you will probably find method ``clear()`` useful.
+
+```php
+use FSi\Component\PropertyObserver\MultiplePropertyObserver
+
+$observer = new MultiplePropertyObserver();
+$observedProperties = array('name', 'date', 'text');
+
+foreach ($collection as $object) {
+    $observer->saveValues($object, $observedProperties);
+
+    // a lot of complex code which can modify properties 'name', 'date' and/or 'text' of $object
+
+    if ($observer->hasChangedValues($object, $observedProperties)) {
+        // do something
+    } else {
+        // do something else
+    }
+
+    $observer->clear();
 }
 ```

@@ -129,4 +129,17 @@ class PropertyObserver implements PropertyObserverInterface
     {
         return $this->hasChangedValue($object, $propertyPath);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function clear($object = null)
+    {
+        if (isset($object)) {
+            $oid = spl_object_hash($object);
+            unset($this->savedValues[$oid]);
+        } else {
+            $this->savedValues = array();
+        }
+    }
 }

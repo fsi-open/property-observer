@@ -155,6 +155,46 @@ class PropertyObserverTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($observer->hasChangedValue($object, 'property3', true));
         $this->assertFalse($observer->hasChangedValue($object, 'property4', true));
     }
+
+    public function testClearOneObject()
+    {
+        $observer = new PropertyObserver();
+
+        $object1 = new TestObject();
+        $object1->property1 = 'original value 1';
+        $object2 = new TestObject();
+        $object2->property2 = 'original value 2';
+        $observer->saveValue($object1, 'property1');
+        $observer->saveValue($object2, 'property2');
+
+        $this->assertTrue($observer->hasSavedValue($object1, 'property1'));
+        $this->assertTrue($observer->hasSavedValue($object2, 'property2'));
+
+        $observer->clear($object1);
+
+        $this->assertFalse($observer->hasSavedValue($object1, 'property1'));
+        $this->assertTrue($observer->hasSavedValue($object2, 'property2'));
+    }
+
+    public function testClearAllObjects()
+    {
+        $observer = new PropertyObserver();
+
+        $object1 = new TestObject();
+        $object1->property1 = 'original value 1';
+        $object2 = new TestObject();
+        $object2->property2 = 'original value 2';
+        $observer->saveValue($object1, 'property1');
+        $observer->saveValue($object2, 'property2');
+
+        $this->assertTrue($observer->hasSavedValue($object1, 'property1'));
+        $this->assertTrue($observer->hasSavedValue($object2, 'property2'));
+
+        $observer->clear();
+
+        $this->assertFalse($observer->hasSavedValue($object1, 'property1'));
+        $this->assertFalse($observer->hasSavedValue($object2, 'property2'));
+    }
 }
 
 class TestObject
