@@ -82,4 +82,16 @@ interface PropertyObserverInterface
      * @deprecated will be removed in 1.0
      */
     public function hasValueChanged($object, $propertyPath);
+
+    /**
+     * Clears internally saved values of specified object
+     *
+     * @param object $object
+     */
+    public function remove($object);
+
+    /**
+     * Clears internally saved values of all objects
+     */
+    public function clear();
 }
