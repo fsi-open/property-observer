@@ -13,7 +13,8 @@ env:
   - COMPOSER_FLAGS="--prefer-lowest"
 
 before_script:
-  - curl -s http://getcomposer.org/installer | php
-  - php composer.phar update --dev $COMPOSER_FLAGS
+  - phpenv config-rm xdebug.ini || true # TODO: remove once xdebug for 7.1 is officially supported on travis
+  - composer self-update -n
+  - composer update $COMPOSER_FLAGS
 
 script: bin/phpunit
