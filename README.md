@@ -1,3 +1,7 @@
+# THIS PACKAGE IS DEPRECATED
+
+Do not use this package, as it will not receive any updates and may be deleted in the future.
+
 # FSi PropertyObserver Component
 
 PropertyObserver is a simple component which tracks changes in registered object's properties. It's useful if i.e. we want to
